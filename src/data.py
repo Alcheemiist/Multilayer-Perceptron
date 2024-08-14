@@ -93,7 +93,7 @@ if __name__ == "__main__":
         path = sys.argv[1]
 	
     dataset = (train_X, train_Y), (test_X, test_Y) = preprocess_binary_output_data(extract_csv(path))
-    print(f"train shape : {train_X.shape}, {train_Y.shape}, test shape : {test_X.shape}, {test_Y.shape}")
+    print(f"data train shape : {train_X.shape}, {train_Y.shape}\ndata test  shape : {test_X.shape}, {test_Y.shape}")
 	
     # save the train and test dataset
     np.save("../data/train_X.npy", train_X)

@@ -23,6 +23,15 @@ class Model:
 		self.layers.append(layer)
 		self.activations.append(activation)
 	
+	def instance_model(self, model_data):
+		""" Instance the model from the model data """
+		self.layers = [layer for layer in model_data["layers"]]
+		self.activations = [activation for activation in model_data["activations"]]
+		self.optimizer = model_data["optimizer"]
+		self.loss = model_data["loss"]
+		self.accuracies = model_data["accuracies"]
+		return self
+	
 	def predict(self, values):
 		if isinstance(self.loss, Loss.BinaryCrossEntropy):
 			predictions = (values > 0.5) * 1
@@ -126,6 +135,8 @@ class Model:
 		y = np.array(y)
 		feed = x
 		loss_activation = None
+		print("Test data shape: ", x.shape)
+		print("Evaluating model...")
 
 		layer: Layer.Layer
 		activation: Activation
@@ -143,11 +154,14 @@ class Model:
 		else:
 			pass
 		predictions = self.predict(feed)
+		# print("Predictions :", predictions)
+		# print("True values: ", y)
 		accuracy = np.mean(predictions == y)
 
 		print(f'accuracy: {accuracy:.3f}')
 		true_table = np.array([1 if  pred == real else 0 for pred, real in zip(predictions, y)]).reshape(1, -1)
-		print("true table : ", true_table)
+		print(f"Binary Prediction Vector ({len(true_table[0])}) : ", true_table)
+
 		return {"prediction": predictions, "accuracy": accuracy}
 		#return {"predictions": predictions, "accuracy": accuracy, "loss": loss, "true_table": true_table}
 	
@@ -169,37 +183,25 @@ class Model:
 		plt.xlabel('Epochs')
 		plt.ylabel('Accuracy')
 		plt.legend()
-
 		plt.tight_layout()
 		plt.show()
+
+		# save loss and accuracy to file
+		id = input("Enter the model id: ")
+		np.save(f"../historics/loss-{id}.npy", self.losses)
+		np.save(f"../historics/accuracy-{id}.npy", self.accuracies)
 
 	def save(self, path):
 		""" Save the model to a file  model.npy """
 
 		with open(path, 'wb') as f:
-			np.save(f, [layer.__dict__ for layer in self.layers])
-			np.save(f, [activation.__dict__ for activation in self.activations])
-			np.save(f, self.loss.__dict__)
-			np.save(f, self.optimizer.__dict__)
+			np.save(f, [layer for layer in self.layers])
+			np.save(f, [activation for activation in self.activations])
+			np.save(f, self.optimizer)
+			np.save(f, self.loss)
+			np.save(f, self.accuracies)
 		
 		print(f"Model saved to {path}")
 	
-	def load(self, path):
-		""" 
-		Load the model from a file model.npy
-		"""
-
-		with open(path, 'rb') as f:
-			layer_dicts = np.load(f, allow_pickle=True)
-			activation_dicts = np.load(f, allow_pickle=True)
-			loss_dict = np.load(f, allow_pickle=True)
-			optimizer_dict = np.load(f, allow_pickle=True)
-		
-		self.layers = [Layer.Layer(**layer_dict) for layer_dict in layer_dicts]
-		self.activations = [Activation.activation(**activation_dict) for activation_dict in activation_dicts]
-		self.loss = Loss.loss(**loss_dict)
-		self.optimizer = Optimizer.optimizer(**optimizer_dict)
-		print(f"Model loaded from {path}")
-
 
 __all__ = ['Model']

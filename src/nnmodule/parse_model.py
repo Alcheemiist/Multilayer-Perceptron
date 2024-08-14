@@ -6,6 +6,8 @@ from .model import Model
 from . import activation as Activation
 from . import initializer as Initializer
 import pandas as pd
+import numpy as np
+
 
 def extract_csv(filepath: str):
   """ Extracts the data from a csv file """
@@ -129,6 +131,31 @@ def compile_fit_evaluate_parsed_model(model_data: dict, preprocess_func,  data: 
 	model.evaluate(test_X, test_Y)
 	return model
 
+def compile_load_evaluate_model(model_data: dict, test_X, test_Y)-> Model:
+	""" 
+		Compile and fit a model from parsed data
+		- model_data: The parsed model data
+		- preprocess_func: The function to preprocess the data
+		- data: The data to use
+		- display: Whether to display the training progress
+		- plot: Whether to plot the training progress
+		- return: The trained model 
+	"""
+	with open("../model/model.npy", 'rb') as f:
+		layer_dicts = np.load(f, allow_pickle=True)
+		activation_dicts = np.load(f, allow_pickle=True)
+		loss_dict = np.load(f, allow_pickle=True)
+		optimizer_dict = np.load(f, allow_pickle=True)
+		accuracies_dict = np.load(f, allow_pickle=True)
+
+	model = Model()
+	model_data["layers"][0].updateInputs(test_X.shape[1])
+	for layer, activation in zip(model_data["layers"], model_data["activations"]):
+		model.add(layer, activation)
+	model.compile(model_data["optimizer"], model_data["loss"])
+	model.instance_model({"layers": layer_dicts, "activations": activation_dicts, "loss": loss_dict, "optimizer": optimizer_dict, "accuracies": accuracies_dict})
+	model.evaluate(test_X, test_Y)
+
 def validate_loss_function(value):
 	"""
 		Validate the loss function
@@ -196,4 +223,4 @@ def validate_csv_data(value):
 	except Exception:
 		raise ModelConfigurationError('CSV data not valid')
 
-__all__ = ['parse_model_json', 'compile_and_fit_parsed_model', 'compile_fit_evaluate_parsed_model']
+__all__ = ['parse_model_json', 'compile_and_fit_parsed_model', 'compile_fit_evaluate_parsed_model', 'compile_load_evaluate_model']

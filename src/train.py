@@ -9,9 +9,8 @@ if __name__ == "__main__":
 	
     model_path = "../model/model.json"
     model_data = nn.parse_model_json(model_path)
-    model = nn.compile_and_fit_parsed_model(model_data, preprocess_func=None, data=dataset)
+    model = nn.parse_model.compile_and_fit_parsed_model(model_data, preprocess_func=None, data=dataset)
 
     # save the model
     model.save("../model/model.npy")
-
-    #model.evaluate(test_X, test_Y)
+    model.evaluate(test_X, test_Y)
