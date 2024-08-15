@@ -21,7 +21,7 @@ def load_model(model_path="../model/model.npy"):
     return model
 
 if __name__ == "__main__":
-    model_path = "../model/model1.npy"
+    model_path = "../model/model.npy"
     test_X_path = "../data/test_X.npy"
     test_Y_path = "../data/test_Y.npy"
 

@@ -3,6 +3,8 @@ from . import activation as Activation
 from . import loss as Loss
 from . import optimizer as Optimizer
 import numpy as np
+import matplotlib
+matplotlib.use('TkAgg')  # or 'Qt5Agg', 'WebAgg', etc.
 import matplotlib.pyplot as plt
 
 class Model:
@@ -158,8 +160,14 @@ class Model:
 		# print("True values: ", y)
 		accuracy = np.mean(predictions == y)
 
+
 		print(f'accuracy: {accuracy:.3f}')
+		print(f'loss: {loss:.3f}')
 		true_table = np.array([1 if  pred == real else 0 for pred, real in zip(predictions, y)]).reshape(1, -1)
+		
+		print(f"pred vector [{len(predictions)}] : ", list(predictions), "\n")
+		print(f"true vector [{len(y)}] : ", y.tolist() , "\n")
+		
 		print(f"Binary Prediction Vector ({len(true_table[0])}) : ", true_table)
 
 		return {"prediction": predictions, "accuracy": accuracy}
