@@ -2,82 +2,48 @@
 
 The project focused on implementing a Multilayer Perceptron (MLP), a type of artificial neural network, from scratch. The goal is to classify breast cancer diagnoses based on a dataset of breast mass characteristics, distinguishing between malignant and benign cases.
 
-## Project Overview
+## MLP Architecture
 
-1. Introduction to Multilayer Perceptron (MLP)
+### Optimization Algorithms
 
-Multilayer Perceptron: A feedforward neural network with one or more hidden layers between the input and output layers. Each neuron in a layer is connected to every neuron in the next layer. This type of network is particularly useful for binary classification tasks, such as predicting whether a tumor is malignant or benign.
-Perceptron: The basic unit of the MLP, which consists of inputs, weights, a bias, an activation function, and an output. The perceptron computes a weighted sum of its inputs, adds a bias, and then applies an activation function to determine the output.
+- **Gradient Descent**: An optimization algorithm used to minimize the cost function.
 
-2. Objectives
+- **SGD (Stochastic Gradient Descent)**: A variant of gradient descent that updates model parameters using a single or a few training examples at each iteration.
 
-Implementation: You are expected to implement the MLP from scratch, without using any libraries that handle neural networks. The project emphasizes understanding the algorithms involved in the training process, including feedforward propagation, backpropagation, and gradient descent.
-Mathematical Foundations: Familiarity with linear algebra and derivatives is crucial, as these are used extensively in the training algorithms.
+- **Adam Optimizer**: An optimization algorithm that combines the advantages of both AdaGrad and RMSProp.
 
-3. Dataset
+- **AdaGrad** adjusts the learning rate based on historical gradients, tracks the sum of squared gradients, and may suffer from a diminishing learning rate over time.
 
-The dataset provided is a CSV file with 32 columns, where the target label is the diagnosis (either 'M' for malignant or 'B' for benign). The other columns represent various features of the cell nuclei.
-Data Preprocessing: The data is raw and will need to be cleaned and preprocessed before training. You’ll need to split the dataset into training and validation sets, and possibly normalize or standardize the features.
+- **RMSProp** adjusts the learning rate using a moving average, employs an exponentially decaying average of squared gradients, and prevents the learning rate from becoming too small.
 
-4. Implementation Requirements
+### Neural Network Processes
 
-Your MLP should contain at least two hidden layers.
-You must implement the softmax function for the output layer to obtain a probabilistic distribution, which is crucial for binary classification.
-The implementation should be modular, allowing for flexibility in the number of layers, activation functions, and other parameters.
-During training, you’ll need to visualize the learning process by plotting learning curves for both the loss and accuracy over epochs.
-You are required to submit three programs:
-Data Splitting Program: To split the dataset into training and validation sets.
-Training Program: To train the MLP using backpropagation and gradient descent, saving the model at the end.
-Prediction Program: To load the trained model, perform predictions on a given dataset, and evaluate the performance using binary cross-entropy.
+- **Feedforward**: The process where input data passes through the network layers to produce an output.
 
-5. Bonus Part
+- **Backpropagation**: A supervised learning algorithm used for training neural networks by calculating the gradient of the loss function.
 
-If the mandatory part is completed perfectly, you can implement additional features like:
-Advanced optimization techniques (e.g., Adam, RMSprop).
-Multiple learning curves on the same graph.
-Early stopping to prevent overfitting.
-Evaluating the model with different metrics.
+### Activation Functions
 
-## Steps to Solve the Project
+- **ReLU (Rectified Linear Unit)**: Outputs the input directly if it is positive; otherwise, it outputs zero.
 
+- **Sigmoid**: Maps input values to a range between 0 and 1.
 
-- Understand the Dataset:
+- **Softmax**: Converts raw output scores into probabilities that sum to one.
 
-Start by loading and inspecting the dataset.
-Perform exploratory data analysis (EDA) to understand the distribution of features and identify any anomalies.
+- **Tanh (Hyperbolic Tangent)**: maps input values to a range between -1 and 1, is symmetric around the origin, and introduces non-linearity into the model, allowing it to learn complex patterns.
 
-- Preprocess the Data:
+- **Common Activation Functions**: ReLU, Sigmoid, and Tanh.
 
-Clean the data by handling missing values, if any.
-Normalize or standardize the features to ensure the training process is stable.
+### Neural Network Components
 
-- Design the MLP Architecture:
+- **Dense**: A fully connected layer where each neuron is connected to every neuron in the previous layer.
 
-Define the network structure with the required number of layers and neurons.
-Choose appropriate activation functions (e.g., ReLU, Sigmoid).
-Implement the forward pass, where you compute the output of the network given an input.
+### Evaluation Metrics
 
-- Implement Backpropagation and Gradient Descent:
+- **Loss**: A measure of how well the neural network's predictions match the actual target values.
 
-Compute the gradients of the loss function with respect to the network’s parameters.
-Update the parameters using gradient descent to minimize the loss function.
+- **Accuracy**: A metric used to evaluate the performance of a classification model.
 
-- Training and Validation:
+### Summary
 
-Train the network on the training set and validate it on the validation set.
-Track the training progress by plotting the loss and accuracy over epochs.
-
-- Evaluate and Fine-tune:
-
-Evaluate the model’s performance on the validation set.
-If necessary, adjust the network architecture or hyperparameters and retrain.
-
-- Implement the Bonus Features (optional):
-
-Add more sophisticated optimization techniques, learning curve visualizations, or early stopping mechanisms.
-
-- Submit the Project:
-
-Ensure that your code is well-organized and meets the submission requirements.
-Include clear documentation and explanations, especially for the training phase and the algorithms used.
-This structured approach should help you successfully complete the project. If you need more detailed guidance on any specific part, feel free to ask!
+These concepts are fundamental to understanding and working with neural networks and machine learning models.
