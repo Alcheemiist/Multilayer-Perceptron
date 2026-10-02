@@ -1,49 +1,51 @@
-# Multilayer-Perceptron
+# Multilayer Perceptron — a neural network from scratch in NumPy
 
-The project focused on implementing a Multilayer Perceptron (MLP), a type of artificial neural network, from scratch. The goal is to classify breast cancer diagnoses based on a dataset of breast mass characteristics, distinguishing between malignant and benign cases.
+A small deep-learning framework written from scratch in NumPy, with no PyTorch or TensorFlow. It's used to classify breast-cancer biopsies (Wisconsin Diagnostic dataset, 30 features) as **malignant** or **benign**.
 
-## MLP Architecture
+## What's implemented
 
-### Optimization Algorithms
+| Module (`src/nnmodule/`) | Contents |
+|---|---|
+| `layer.py` | Fully connected `Dense` layer: forward pass and backpropagation |
+| `activation.py` | ReLU, Sigmoid, Softmax, and fused Softmax + categorical cross-entropy |
+| `loss.py` | Binary and categorical cross-entropy |
+| `optimizer.py` | SGD and **Adam** |
+| `initializer.py` | Weight initialisers: zero, random normal, He (normal and uniform), Xavier, LeCun |
+| `model.py` | Training loop, evaluation, accuracy and loss history, save/load |
+| `parse_model.py` | Builds a network from a **JSON architecture file** |
 
-- **Gradient Descent**: An optimization algorithm used to minimize the cost function.
+The architecture is configuration, not code:
 
-- **SGD (Stochastic Gradient Descent)**: A variant of gradient descent that updates model parameters using a single or a few training examples at each iteration.
+```json
+{
+  "loss_function": "binarycrossentropy",
+  "layers": [
+    {"type": "Dense", "units": 24, "activation": "relu", "weights_initializer": {"type": "heUniform"}},
+    {"type": "Dense", "units": 24, "activation": "relu"},
+    {"type": "Dense", "units": 2,  "activation": "sigmoid"}
+  ],
+  "epochs": 1001,
+  "optimizer": {"type": "Adam"}
+}
+```
 
-- **Adam Optimizer**: An optimization algorithm that combines the advantages of both AdaGrad and RMSProp.
+## Run it
 
-- **AdaGrad** adjusts the learning rate based on historical gradients, tracks the sum of squared gradients, and may suffer from a diminishing learning rate over time.
+```bash
+git clone https://github.com/Alcheemiist/Multilayer-Perceptron.git
+cd Multilayer-Perceptron
+./setup.sh && source venv/bin/activate
 
-- **RMSProp** adjusts the learning rate using a moving average, employs an exponentially decaying average of squared gradients, and prevents the learning rate from becoming too small.
+cd src
+python train.py ../data/data.csv     # split, train with model/model.json, save model/model.npy
+python predict.py                     # evaluate the saved model on the held-out test set
+python plot-all-metrics.py            # compare loss and accuracy curves across runs (historics/)
+```
 
-### Neural Network Processes
+## Why from scratch
 
-- **Feedforward**: The process where input data passes through the network layers to produce an output.
+Writing backprop, Adam's moment estimates and numerically stable softmax + cross-entropy by hand is the fastest way to understand what frameworks do for you, and why training sometimes diverges.
 
-- **Backpropagation**: A supervised learning algorithm used for training neural networks by calculating the gradient of the loss function.
+---
 
-### Activation Functions
-
-- **ReLU (Rectified Linear Unit)**: Outputs the input directly if it is positive; otherwise, it outputs zero.
-
-- **Sigmoid**: Maps input values to a range between 0 and 1.
-
-- **Softmax**: Converts raw output scores into probabilities that sum to one.
-
-- **Tanh (Hyperbolic Tangent)**: maps input values to a range between -1 and 1, is symmetric around the origin, and introduces non-linearity into the model, allowing it to learn complex patterns.
-
-- **Common Activation Functions**: ReLU, Sigmoid, and Tanh.
-
-### Neural Network Components
-
-- **Dense**: A fully connected layer where each neuron is connected to every neuron in the previous layer.
-
-### Evaluation Metrics
-
-- **Loss**: A measure of how well the neural network's predictions match the actual target values.
-
-- **Accuracy**: A metric used to evaluate the performance of a classification model.
-
-### Summary
-
-These concepts are fundamental to understanding and working with neural networks and machine learning models.
+[Elmahdi Elaazmi](https://elaazmielmahdi.com) · 1337 / 42 Network AI & ML track.
