@@ -7,3 +7,5 @@ dist/
 build/
 *.egg-info/
 *.egg
+venv/
+.DS_Store
